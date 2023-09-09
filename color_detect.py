@@ -51,14 +51,6 @@ while(True):
 #        print(blob.code())
 
         color  = blob.code()
-#    if color == 1:
-#        print('green')
-#    if color == 2:
-#        print('red')
-#    if color == 4:
-#        print('blue')
-#    if color == 8:
-#        print('yellow')
     # print(clock.fps()) # 当连接电脑后，OpenMV会变成一半的速度。当不连接电脑，帧率会增加。
 
     sending_data(color)

@@ -26,14 +26,18 @@ void TIM3_IRQHandler(void)
 		}
 		
 		for(i = 0; i < 4; i++) {
-			// 判断通道内是否有物体
-			if (channel_item[i] == 1) {
-				// 判断桶号和通道号是否相同（也即是否同种物体）
-				if(i == bucket[(i + angle_count) > 3 ? (i + angle_count - 4) : (i + angle_count)]) {
-					//打开通道
-					channel_door[i] = 1;
-				}
-			}
+			// 当 有物体 且 通道号和桶号相同 时，打开门
+			channel_door[i] = channel_item[i] && (i == bucket[clip(i + angle_count)]);
+			
+			
+			// // 判断通道内是否有物体
+			// if (channel_item[i] == 1) {
+			// 	// 判断桶号和通道号是否相同（也即是否同种物体）
+			// 	if(i == bucket[(i + angle_count) > 3 ? (i + angle_count - 4) : (i + angle_count)]) {
+			// 		//打开通道
+			// 		channel_door[i] = 1;
+			// 	}
+			// }
 			
 		}
 

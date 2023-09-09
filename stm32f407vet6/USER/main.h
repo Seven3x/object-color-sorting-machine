@@ -10,4 +10,6 @@ extern uint8_t item;
 extern uint8_t channel_door[4];
 extern u16 USART3_RX_STA;
 
+#define clip(x) ((x) > 3 ? (x) - 4 : (x))
+
 #endif // !__

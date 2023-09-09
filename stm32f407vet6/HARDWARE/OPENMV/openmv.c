@@ -19,7 +19,7 @@ void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
 			if(USART3_RX_STA&0x4000)//接收到了0x0d
 			{
 				if(Res!=0x0a)USART3_RX_STA=0;//接收错误,重新开始
-			p	else {
+				else {
                     USART3_RX_STA|=0x8000;	//接收完成了
                     USART_SendData(USART3, 'b');         //向串口3发送数据
                     while(USART_GetFlagStatus(USART3,USART_FLAG_TC)!=SET);//等待发送结束
