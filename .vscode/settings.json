@@ -1,3 +1,12 @@
 {
-    "files.encoding": "gb2312"
+    "files.encoding": "gb2312",
+    "files.associations": {
+        "timer.h": "c",
+        "channel.h": "c",
+        "lcd1602.h": "c",
+        "main.h": "c",
+        "led.h": "c",
+        "i2c_gpio.h": "c",
+        "sys.h": "c"
+    }
 }

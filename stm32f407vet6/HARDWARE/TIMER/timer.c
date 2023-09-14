@@ -9,6 +9,17 @@
 							  
 ////////////////////////////////////////////////////////////////////////////////// 	 
 
+uint32_t delay_count = 0;
+
+/**
+ * @brief 延迟函数，单位ms，延迟必须为5的倍数，向下取整
+ * 
+ * @param n 
+ */
+void delay(uint32_t n) {
+	delay_count = n / 5;
+	while(delay_count);
+}
 
 //定时器3中断服务函数
 void TIM3_IRQHandler(void)
@@ -21,13 +32,13 @@ void TIM3_IRQHandler(void)
 		int door_count[4] = {0};
 
 		if(++interval_count == 100) {  //每隔 500ms 闪亮一次
-			LED2 = !LED2;
+			// LED2 = !LED2;
 			interval_count = 0;
 		}
 		
 		for(i = 0; i < 4; i++) {
 			// 当 有物体 且 通道号和桶号相同 时，打开门
-			channel_door[i] = channel_item[i] && (i == bucket[clip(i + angle_count)]);
+			// channel_door[i] = channel_item[i] && (i == bucket[clip(i + angle_count)]);
 			
 			
 			// // 判断通道内是否有物体
@@ -40,6 +51,9 @@ void TIM3_IRQHandler(void)
 			// }
 			
 		}
+
+		// 处理delay_count
+		delay_count = delay_count > 0 ? delay_count - 1 : 0;
 
 
 		// 防止门板开启时间过长

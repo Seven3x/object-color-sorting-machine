@@ -14,5 +14,6 @@
 //All rights reserved									  
 ////////////////////////////////////////////////////////////////////////////////// 	
 
+void delay(uint32_t n);
 void TIM3_Int_Init(u16 arr,u16 psc);
 #endif

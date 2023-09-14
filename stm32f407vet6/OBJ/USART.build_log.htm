@@ -22,21 +22,29 @@ Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\Withe\OneDrive\ÎÄµµ\MakeMoney\4\object-color-sorting-machine\stm32f407vet6\USER\main.uvprojx
-Project File Date:  09/09/2023
+Project File Date:  09/14/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keilv5\ARM\ARMCC\Bin'
 Build target 'USART'
-compiling openmv.c...
+compiling main.c...
 ..\HARDWARE\OPENMV\openmv.h(12): warning:  #1-D: last line of file ends without a newline
   #endif // !__
-..\HARDWARE\OPENMV\openmv.c(91): warning:  #1-D: last line of file ends without a newline
-  }
-..\HARDWARE\OPENMV\openmv.c: 2 warnings, 0 errors
+main.c(49): warning:  #177-D: variable "t"  was declared but never referenced
+  	u8 t;
+main.c(50): warning:  #177-D: variable "len"  was declared but never referenced
+  	u8 len;	
+main.c(51): warning:  #177-D: variable "times"  was declared but never referenced
+  	u16 times=0;  
+main.c(52): warning:  #177-D: variable "i"  was declared but never referenced
+  	u8 i = 0;
+main.c: 5 warnings, 0 errors
+compiling lcd1602.c...
+compiling i2c_gpio.c...
 linking...
-Program Size: Code=3812 RO-data=424 RW-data=52 ZI-data=1636  
+Program Size: Code=4900 RO-data=424 RW-data=72 ZI-data=1632  
 FromELF: creating hex file...
-"..\OBJ\USART.axf" - 0 Error(s), 2 Warning(s).
+"..\OBJ\USART.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 

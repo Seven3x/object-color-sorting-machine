@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\HARDWARE\LED;..\HARDWARE\BEEP;..\HARDWARE\KEY;..\FWLIB\inc;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\CHANNEL;..\HARDWARE\MOTOR;..\HARDWARE\OPENMV</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\HARDWARE\LED;..\HARDWARE\BEEP;..\HARDWARE\KEY;..\FWLIB\inc;..\HARDWARE\EXTI;..\HARDWARE\TIMER;..\HARDWARE\CHANNEL;..\HARDWARE\MOTOR;..\HARDWARE\OPENMV;..\HARDWARE\LCD1602;..\HARDWARE\IIC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -437,6 +437,16 @@
               <FileName>openmv.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\OPENMV\openmv.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd1602.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\LCD1602\lcd1602.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\IIC\i2c_gpio.c</FilePath>
             </File>
           </Files>
         </Group>
