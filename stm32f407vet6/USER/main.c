@@ -41,8 +41,47 @@ uint8_t channel_door[4];
  */
 uint8_t bucket[4] = {0, 1, 2, 3};
 
-uint8_t message[] = "How are you?";
+/**
+ * 拨码开关状态量，持续按下视为一次
+ * 0: 未按下
+ * 1: 按下
+ */
+uint8_t switch_state_once = 0;
+/**
+ * 拨码开关状态量，持续按下视为多次
+ * 0: 未按下
+ * 1: 按下
+ */
+uint8_t switch_state = 0;
 
+/**
+ * 传送带电机开启时间
+ * 单位为 5ms
+ */
+uint16_t motor_state_count = 0;
+
+/**
+ * 传送带传送允许标志位
+ * 0: 不允许传送
+ * 1: 允许传送
+ * 该标志为1时，如果传送带电机开启时间不为0，则传送带电机开启
+ */
+uint8_t motor_state = 0;
+
+/**
+ * 当前方块颜色
+ * 0: 无方块
+ * 1: 红
+ * 2: 黄
+ * 3: 蓝
+ * 4: 绿
+ */
+uint8_t current_color = 0;
+
+// uint8_t message[] = "How are you?";
+
+
+uint8_t debug_flag = 0;
 
 int main(void)
 { 
@@ -61,24 +100,36 @@ int main(void)
 	TIM3_Int_Init(50-1,8400-1);	//分频系数8400 计数50次，84000000/8400/50=200Hz=5ms
 	Openmv_Init();			//openmv初始化
 
-	delay_ms(1000);
+	// delay_ms(1000);
 
-	LCD_Init();
+	// LCD_Init();
 
-	LCD_ShowStr(2,0,message); 
+	// LCD_ShowStr(2,0,message); 
 	
-	delay_ms(1000);
+	// delay_ms(1000);
 	while(1)
 	{
 
-
-		// LED2 = !LED2;
+		
+		LED2 = KEY_Scan(1,0);
 
 		//***********测试电磁铁********
-		// delay(4000);
-		// for(i = 0; i < 4; i++) {
-		// 	channel_door[i] = !channel_door[i];
-		// }
+		delay(50);
+		for(i = 0; i < 4; i++) {
+			channel_door[i] = 0;
+		}
+		C0 = channel_door[0];
+			C1 = channel_door[1];
+			C2 = channel_door[2];
+			C3 = channel_door[3];
+		delay(4000);
+		for(i = 0; i < 4; i++) {
+			channel_door[i] = 1;
+		}
+		C0 = channel_door[0];
+			C1 = channel_door[1];
+			C2 = channel_door[2];
+			C3 = channel_door[3];
 
 		//***********测试串口***********
 		// if((USART3_RX_STA & 0x8000) !=0)//接收完成
@@ -93,7 +144,19 @@ int main(void)
 		// 	LED2 = ~ LED2;
 		// }
 		
-		delay_ms(1000);
+
+		// 每个循环检测一次拨码开关 连续打开视为一次
+		// switch_state_once = KEY_Scan(1, 1);
+		// switch_state = KEY_Scan(1, 0);
+
+		// if(switch_state_once) {
+		// 	angle_count = clip(angle_count + 1);
+		// }
+		// if(switch_state) {
+		// 	motor_state = 1;
+		// }
+
+		// delay_ms(1000);
 		
 			
 	}

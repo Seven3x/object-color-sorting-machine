@@ -10,7 +10,12 @@ extern uint8_t item;
 extern uint8_t channel_door[4];
 extern u16 USART3_RX_STA;
 extern uint32_t delay_count;
-
+extern uint8_t debug_flag;
+extern uint8_t switch_state;
+extern uint16_t motor_state_count;
+extern uint8_t motor_state;
+extern uint8_t switch_state_once;
+extern uint8_t current_color;
 
 #define clip(x) ((x) > 3 ? (x) - 4 : (x))
 

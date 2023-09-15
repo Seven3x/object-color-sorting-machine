@@ -31,17 +31,29 @@ void TIM3_IRQHandler(void)
 		// 四个门板开启时间计时
 		int door_count[4] = {0};
 
-		if(++interval_count == 100) {  //每隔 500ms 闪亮一次
+		if(++interval_count == 100) {  //每隔 500ms 闪亮一次 确保单片机没有卡死
 			// LED2 = !LED2;
 			interval_count = 0;
 		}
 		
+		// 判断当前颜色是否和通道相同
+		if (current_color) {
+			// 判断桶号和通道号是否相同（也即是否同种物体）
+			if(current_color == angle_count) {
+				// 打开电机多少个 5ms （5ms的倍数）
+				motor_state_count = 60;
+				// 通道内有物体
+				channel_item[angle_count] = 1;
+
+			}
+		}
+
+
 		for(i = 0; i < 4; i++) {
 			// 当 有物体 且 通道号和桶号相同 时，打开门
-			// channel_door[i] = channel_item[i] && (i == bucket[clip(i + angle_count)]);
-			
-			
-			// // 判断通道内是否有物体
+			channel_door[i] = channel_item[i] && (i == bucket[clip(i + angle_count)]);
+			channel_item[i] = !channel_door[i];
+			// 判断通道内是否有物体
 			// if (channel_item[i] == 1) {
 			// 	// 判断桶号和通道号是否相同（也即是否同种物体）
 			// 	if(i == bucket[(i + angle_count) > 3 ? (i + angle_count - 4) : (i + angle_count)]) {
@@ -49,24 +61,44 @@ void TIM3_IRQHandler(void)
 			// 		channel_door[i] = 1;
 			// 	}
 			// }
-			
 		}
 
+		
+		// 处理motor_state_count
+		// 当motor_state_count为0时，关闭电机，标志位清0
+		if (motor_state_count == 0) {
+			motor_state = 0;
+		} else if (motor_state == 1){ //当motor_state为1时，motor_state_count自减
+			motor_state_count--;
+		}
 		// 处理delay_count
 		delay_count = delay_count > 0 ? delay_count - 1 : 0;
 
 
 		// 防止门板开启时间过长
 		for(i = 0; i < 4; i++) {
-			//if(door_count[i] == 0 &&);
+			// 当已有计时且门板关闭时，关闭计时
+			if(door_count[i] != 0 && channel_door[i] == 0) {
+				door_count[i] = 0;
+			}
+			// 当门板开启时，开始计时
+			door_count[i] += channel_door[i];
+			// 当计时超过 100*5ms 时，关闭门板
+			if(door_count[i] >= 100) {
+				channel_door[i] = 0;
+			}
 		}
 
-		// 根据channel_door数组的值控制门板
-		C0 = channel_door[0];
-		C1 = channel_door[1];
-		C2 = channel_door[2];
-		C3 = channel_door[3];
 
+		// 根据motor_state_count的值控制电机
+		//Motor = motor_state && motor_state_count;
+		// 根据channel_door数组的值控制门板
+		if(0) {
+			C0 = channel_door[0];
+			C1 = channel_door[1];
+			C2 = channel_door[2];
+			C3 = channel_door[3];
+		}
 	}
 	TIM_ClearITPendingBit(TIM3,TIM_IT_Update);  //清除中断标志位
 }
