@@ -27,6 +27,11 @@ uint8_t angle_count;
 
 /**
  * 每个通道当前是否存放物体
+ * 0: 无方块
+ * 1: 红
+ * 2: 黄
+ * 3: 蓝
+ * 4: 绿
  */
 uint8_t channel_item[4];
 
@@ -37,7 +42,8 @@ uint8_t channel_item[4];
 uint8_t channel_door[4];
 
 /**
- * 四个桶的编号，范围 0~3，可以修改此处以修改桶内存放的物体，分别和物体的0~3对应
+ * 四个桶的编号，范围 0~3
+ * 可以修改此处以修改桶内存放的物体，分别和物体的0~3对应
  */
 uint8_t bucket[4] = {0, 1, 2, 3};
 
@@ -110,34 +116,17 @@ int main(void)
 	while(1)
 	{
 
-		
-		LED2 = KEY_Scan(1,0);
-
 		//***********测试电磁铁********
-		delay(50);
-		for(i = 0; i < 4; i++) {
-			channel_door[i] = 0;
-		}
-		C0 = channel_door[0];
-			C1 = channel_door[1];
-			C2 = channel_door[2];
-			C3 = channel_door[3];
-		delay(4000);
-		for(i = 0; i < 4; i++) {
-			channel_door[i] = 1;
-		}
-		C0 = channel_door[0];
-			C1 = channel_door[1];
-			C2 = channel_door[2];
-			C3 = channel_door[3];
+		// test_channel();
+		
+		//***********测试电机***********
+		delay_ms(10000);
+		Motor = 1;
+		delay_ms(10000);
+		Motor = 0;
 
 		//***********测试串口***********
-		// if((USART3_RX_STA & 0x8000) !=0)//接收完成
-		// {
-		// 	USART_SendData(USART1, USART3_RX_BUF);         //向串口1发送数据
-		//     while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
-		// 	USART3_RX_STA = 0;
-		// }
+		// test_usart();
 
 		//***********测试输入***********
 		// if(KEY_Scan(1) == 1) {

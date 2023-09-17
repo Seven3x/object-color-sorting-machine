@@ -21,6 +21,11 @@ void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
 				if(Res!=0x0a)USART3_RX_STA=0;//接收错误,重新开始
 				else {
                     USART3_RX_STA|=0x8000;	//接收完成了
+                    //颜色赋值
+                    current_color = USART3_RX_BUF;
+                    if (!current_color) {//如果为0，则继续接受，否则等待调用后清零
+                        USART3_RX_STA = 0;
+                    }
                     USART_SendData(USART3, 'b');         //向串口3发送数据
                     while(USART_GetFlagStatus(USART3,USART_FLAG_TC)!=SET);//等待发送结束
                 }
@@ -35,6 +40,7 @@ void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
                 else
 				{
 					USART3_RX_BUF=Res;
+                    current_color = Res;
 
 					USART3_RX_STA++;
 					if(USART3_RX_STA> 1)USART3_RX_STA=0;//接收数据错误,重新开始接收	  
@@ -89,3 +95,17 @@ void Openmv_Init(void) {
     USART_ClearITPendingBit(USART3, USART_IT_RXNE);
     
 }
+
+void test_usart(void) {
+    if((USART3_RX_STA & 0x8000) != 0)//接收完成
+    {
+        USART_SendData(USART1, USART3_RX_BUF+'0');         //向串口1发送数据
+        while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+        USART3_RX_STA = 0;
+    }
+}
+
+
+
+
+

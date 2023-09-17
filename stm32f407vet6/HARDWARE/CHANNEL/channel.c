@@ -1,8 +1,9 @@
 #include "channel.h"
 #include "usart.h"
+#include "main.h"
 
 /**
- * @brief 通道初始化
+ * @brief 通道门控制引脚初始化
  * 
  */
 void Channel_Init(void) {
@@ -24,4 +25,22 @@ void Channel_Init(void) {
     C1 = 0;
     C2 = 0;
     C3 = 0;
+}
+
+void test_channel(void) {
+    debug_flag = 1;
+    delay_ms(200);
+    C0 = 1;
+    delay_ms(200);
+    C1 = 1;
+    C0 = 0;
+    delay_ms(200);
+    C2 = 1;
+    C1 = 0;
+    delay_ms(200);
+    C3 = 1;
+    C2 = 0;
+    delay_ms(200);
+    C3 = 0;
+    delay_ms(3000);
 }

@@ -8,10 +8,8 @@
 #define C2 PDout(5)
 #define C3 PDout(7)
 
-/**
- * @brief 通道门控制引脚初始化
- * 
- */
+
 void Channel_Init(void);
+void test_channel(void);
 
 #endif // !__

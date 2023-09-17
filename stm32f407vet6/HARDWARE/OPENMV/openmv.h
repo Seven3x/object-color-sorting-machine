@@ -8,5 +8,6 @@
 
 void Usart2_Init(u32 bound);
 void Openmv_Init(void);
+void test_usart(void);
 
 #endif // !__
