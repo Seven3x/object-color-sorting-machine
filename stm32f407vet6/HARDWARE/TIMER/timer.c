@@ -1,6 +1,7 @@
 #include "timer.h"
 #include "led.h"
 #include "main.h"
+#include "motor.h"
 #include "channel.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 
@@ -31,27 +32,27 @@ void TIM3_IRQHandler(void)
 		// 四个门板开启时间计时
 		int door_count[4] = {0};
 
-		if(++interval_count == 100) {  //每隔 500ms 闪亮一次 确保单片机没有卡死
-			LED2 = !LED2;
+		//每隔 500ms 闪亮一次 确保单片机没有卡死
+		if(++interval_count == 100 && !debug_flag) {  
+			// LED2 = !LED2;
 			interval_count = 0;
 		}
 		
 		// 当碰到拨码开关时，执行该程序
 		if(switch_state_once) {
 
-			// 判断当前颜色是否和通道相同
+			// 判断当前颜色
 			if (current_color) {
-				// 判断桶号和通道号是否相同（也即是否同种物体）
-				if(current_color == angle_count) {
-					// 打开电机多少个 5ms （5ms的倍数）
-					motor_state_count = 30;
+					// 打开电机多少个 5ms 
+					motor_state_count = 200;
+					motor_state = 1;
 					// 放进东西
-					channel_item[angle_count] = current_color;
+					// channel_item[angle_count] = current_color;
 					// 清空当前颜色
 					current_color = 0;
 					// 串口继续接收
 					USART3_RX_STA = 0;
-				}
+				
 			}
 
 			// 当 有物体 且 物体和桶号相同 时，打开门
@@ -64,6 +65,7 @@ void TIM3_IRQHandler(void)
 				}
 			}
 
+			// 清零该标志位
 			switch_state_once = 0;
 		}
 
@@ -96,7 +98,7 @@ void TIM3_IRQHandler(void)
 
 
 		// 根据motor_state_count的值控制电机
-		//Motor = motor_state && motor_state_count;
+		Motor = motor_state && motor_state_count;
 		// 根据channel_door数组的值控制门板
 		if(!debug_flag) {
 			C0 = channel_door[0];

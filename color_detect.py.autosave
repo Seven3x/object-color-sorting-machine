@@ -41,7 +41,7 @@ sensor.set_framesize(sensor.QQVGA) # 使用QQVGA的速度。
 #设置图像像素大小
 
 
-roi = [0, 35, 160 ,40]
+roi = [0, 35, 160 ,70]
 sensor.set_windowing(roi)
 
 
@@ -61,7 +61,7 @@ while(True):
     for tag in img.find_apriltags(fx=f_x, fy=f_y, cx=c_x, cy=c_y): # defaults to TAG36H11
         img.draw_rectangle(tag.rect(), color = (255, 0, 0))
         cx = tag.cx()
-        cy = tag.cy()
+        cy = ag.cy()
         img.draw_cross(cx, cy, color = (0, 255, 0))
 #        print(cx, cy)
 #        print(tag.rect())

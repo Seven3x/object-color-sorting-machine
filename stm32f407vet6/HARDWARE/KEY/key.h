@@ -20,8 +20,11 @@
 
 #define WKUP_PRES   1
 #include "sys.h"
+#include "led.h"
 
 void KEY_Init(void);	//IO初始化
 u8 KEY_Scan(u8, u8);  		//按键扫描函数	
+void DIP_Scan(u8 key, u8 value);
+void test_DIP(void);
 
 #endif

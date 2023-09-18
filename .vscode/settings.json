@@ -8,6 +8,8 @@
         "led.h": "c",
         "i2c_gpio.h": "c",
         "sys.h": "c",
-        "key.h": "c"
+        "key.h": "c",
+        "delay.h": "c",
+        "motor.h": "c"
     }
 }

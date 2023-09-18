@@ -28,6 +28,8 @@ void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
                     }
                     USART_SendData(USART3, 'b');         //向串口3发送数据
                     while(USART_GetFlagStatus(USART3,USART_FLAG_TC)!=SET);//等待发送结束
+                    USART_SendData(USART1, USART3_RX_BUF+'0');         //向串口1发送数据
+                    while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
                 }
 			}
 			else //还没收到0X0D

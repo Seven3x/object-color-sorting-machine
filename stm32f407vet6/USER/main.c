@@ -120,31 +120,22 @@ int main(void)
 		// test_channel();
 		
 		//***********测试电机***********
-		delay_ms(10000);
-		Motor = 1;
-		delay_ms(10000);
-		Motor = 0;
+		// test_Motor();
 
 		//***********测试串口***********
 		// test_usart();
 
-		//***********测试输入***********
-		// if(KEY_Scan(1) == 1) {
-		// 	LED2 = ~ LED2;
-		// }
+		//***********测试拨码开关***********
+		// test_DIP();
+
+		
 		
 
-		// 每个循环检测一次拨码开关 连续打开视为一次
-		// switch_state_once = KEY_Scan(1, 1);
-		// switch_state = KEY_Scan(1, 0);
-
-		// if(switch_state_once) {
-		// 	angle_count = clip(angle_count + 1);
-		// }
-		// if(switch_state) {
-		// 	motor_state = 1;
-		// }
-
+		// 每个循环检测一次拨码开关，值返回到switch_state_once和switch_state
+		// LED2 = KEY_Scan(1, 0);
+		DIP_Scan(2, 0);
+		LED2 = switch_state_once;
+	
 		// delay_ms(1000);
 		
 			
