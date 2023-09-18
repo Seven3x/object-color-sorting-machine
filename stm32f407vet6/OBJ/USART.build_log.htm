@@ -27,14 +27,26 @@ Project File Date:  09/14/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keilv5\ARM\ARMCC\Bin'
 Build target 'USART'
+compiling main.c...
+..\HARDWARE\OPENMV\openmv.h(13): warning:  #1-D: last line of file ends without a newline
+  #endif // !__
+main.c(94): warning:  #177-D: variable "t"  was declared but never referenced
+  	u8 t;
+main.c(95): warning:  #177-D: variable "len"  was declared but never referenced
+  	u8 len;	
+main.c(96): warning:  #177-D: variable "times"  was declared but never referenced
+  	u16 times=0;  
+main.c(97): warning:  #177-D: variable "i"  was declared but never referenced
+  	u8 i = 0;
+main.c: 5 warnings, 0 errors
 compiling timer.c...
-..\HARDWARE\TIMER\timer.c(35): warning:  #260-D: explicit type is missing ("int" assumed)
+..\HARDWARE\TIMER\timer.c(36): warning:  #260-D: explicit type is missing ("int" assumed)
   		static  door_count[4] = {0};
 ..\HARDWARE\TIMER\timer.c: 1 warning, 0 errors
 linking...
-Program Size: Code=4380 RO-data=424 RW-data=80 ZI-data=1648  
+Program Size: Code=5388 RO-data=424 RW-data=84 ZI-data=1652  
 FromELF: creating hex file...
-"..\OBJ\USART.axf" - 0 Error(s), 1 Warning(s).
+"..\OBJ\USART.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -47,7 +59,7 @@ Package Vendor: Keil
   D:\Keilv5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

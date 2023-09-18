@@ -56,4 +56,9 @@ dkms.conf
 *.uvproj
 *.uvmpw
 *.uvgui.*
+*.uvguix.*
 *.lst
+*.crf
+*.dep
+*.htm
+OBJ\

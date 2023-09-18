@@ -108,7 +108,7 @@ int main(void)
 
 	// delay_ms(1000);
 
-	// LCD_Init();
+	LCD_Init();
 
 	// LCD_ShowStr(2,0,message); 
 	motor_state = 1;
@@ -135,7 +135,7 @@ int main(void)
 		// LED2 = KEY_Scan(1, 0);
 		DIP_Scan(2, 0);
 		// LED2 = switch_state_once;
-		LED2 = !!current_color;
+		// LED2 = !!current_color;
 		
 		// delay_ms(1000);
 		

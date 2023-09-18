@@ -13,7 +13,8 @@
 uint8_t color_flag = 0;
 uint32_t delay_count = 0;
 uint16_t ucount = 0;;
-
+uint8_t switch_lock = 0;
+uint16_t switch_lock_count = 0;
 /**
  * @brief 延迟函数，单位ms，延迟必须为5的倍数，向下取整
  * 
@@ -45,20 +46,12 @@ void TIM3_IRQHandler(void)
 		
 		// 当碰到拨码开关时，执行该程序
 		if(switch_state_once) {
+			// 确保每次至少间隔1s再触发
+			switch_lock_count = 100;
+			switch_lock = 1;
+
 			angle_count = clip(angle_count + 1);
-			// 判断当前颜色
-			if (current_color) {
-					// 打开电机多少个 5ms 
-					// motor_state_count = 200;
-					ucount = 200;
-					motor_state = 1;
-					// 放进东西
-					channel_item[angle_count] = current_color;
-					// 清空当前颜色
-					current_color = 0;
-					color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
-					color_flag = 1;
-			}
+
 
 			// 当 有物体 且 物体和桶号相同 时，打开门
 			for(i = 0; i < 4; i++) {
@@ -70,11 +63,26 @@ void TIM3_IRQHandler(void)
 				}
 			}
 
+			// 判断当前颜色
+			if (current_color) {
+				// 打开电机多少个 5ms 
+				// motor_state_count = 200;
+				ucount = 200;
+				motor_state = 1;
+				// 放进东西
+				channel_item[angle_count] = current_color;
+				// 清空当前颜色
+				current_color = 0;
+				color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
+				color_flag = 1;
+			}
+
+			
+
 			// 清零该标志位
 			switch_state_once = 0;
 		}
 
-		
 
 		// 处理motor_state_count 	当motor_state_count为0时，关闭电机，标志位清0
 		// if (motor_state_count == 0) {
@@ -82,6 +90,13 @@ void TIM3_IRQHandler(void)
 		// } else if (motor_state == 1){ //当motor_state为1时，motor_state_count自减
 		// 	motor_state_count--;
 		// }
+
+		// 处理switch_lock
+		if (switch_lock_count != 0) {
+			switch_lock_count --;
+		} else {
+			switch_lock	= 0;
+		}
 		
 		if (ucount != 0) {
 			ucount --;

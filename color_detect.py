@@ -41,7 +41,7 @@ sensor.set_framesize(sensor.QQVGA) # 使用QQVGA的速度。
 #设置图像像素大小
 
 
-roi = [0, 35, 160 ,40]
+roi = [0, 35, 160 ,70]
 sensor.set_windowing(roi)
 
 
@@ -65,10 +65,15 @@ while(True):
         img.draw_cross(cx, cy, color = (0, 255, 0))
 #        print(cx, cy)
 #        print(tag.rect())
-        img.draw_rectangle((cx + 128 - 82, cy + 65 - 73, 9, 9), color = (255, 0, 0))
+
+        # 红色位置
+        img.draw_rectangle((cx + 128 - 82, cy + 67 - 73, 9, 9), color = (255, 0, 0))
+        # 绿色位置
         img.draw_rectangle((cx + 110 - 82, cy + 67 - 73, 9, 9), color = (255, 0, 0))
-        img.draw_rectangle((cx + 43 - 82, cy + 70 - 73, 9, 9), color = (255, 0, 0))
-        img.draw_rectangle((cx + 22 - 82, cy + 69 - 73, 9, 9), color = (255, 0, 0))
+        # 蓝色位置
+        img.draw_rectangle((cx + 43 - 82, cy + 67 - 71, 9, 9), color = (255, 0, 0))
+        # 黄色位置
+        img.draw_rectangle((cx + 22 - 86, cy + 67 - 71, 9, 9), color = (255, 0, 0))
 
 #        img.draw_rectangle(
 #        print_args = (tag.x_translation(), tag.y_translation(), tag.z_translation(), \

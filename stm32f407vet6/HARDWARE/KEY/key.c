@@ -62,14 +62,14 @@ void DIP_Scan(u8 key, u8 value) {
 	if (PAin(key) == value) {
 		delay_ms(10);//È¥¶¶¶¯ 
 
-
 		if (PAin(key) == value) {
 			
 			switch_state = 1;
 
 			if (key_up) {
 				key_up = 0;
-				switch_state_once = 1;
+
+				switch_state_once = !switch_lock;
 			}
 		} else {
 			switch_state = 0;

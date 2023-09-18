@@ -18,6 +18,8 @@ extern uint8_t switch_state_once;
 extern uint8_t current_color;
 extern u8 bcount;
 extern u8 color_buffer[4];
+extern uint8_t switch_lock;
+extern uint16_t switch_lock_count;
 
 #define clip(x) (((x) > 3) ? (x) - 4 : (x))
 
