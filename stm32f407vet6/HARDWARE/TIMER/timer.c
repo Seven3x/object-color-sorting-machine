@@ -10,7 +10,9 @@
 							  
 ////////////////////////////////////////////////////////////////////////////////// 	 
 
+uint8_t color_flag = 0;
 uint32_t delay_count = 0;
+uint16_t ucount = 0;;
 
 /**
  * @brief 延迟函数，单位ms，延迟必须为5的倍数，向下取整
@@ -30,29 +32,32 @@ void TIM3_IRQHandler(void)
 	{
 		int i = 0;
 		// 四个门板开启时间计时
-		int door_count[4] = {0};
+		static  door_count[4] = {0};
 
 		//每隔 500ms 闪亮一次 确保单片机没有卡死
-		if(++interval_count == 100 && !debug_flag) {  
+		if(++interval_count == 200 && !debug_flag) {  
 			// LED2 = !LED2;
 			interval_count = 0;
 		}
+
+		
+		
 		
 		// 当碰到拨码开关时，执行该程序
 		if(switch_state_once) {
-
+			angle_count = clip(angle_count + 1);
 			// 判断当前颜色
 			if (current_color) {
 					// 打开电机多少个 5ms 
-					motor_state_count = 200;
+					// motor_state_count = 200;
+					ucount = 200;
 					motor_state = 1;
 					// 放进东西
-					// channel_item[angle_count] = current_color;
+					channel_item[angle_count] = current_color;
 					// 清空当前颜色
 					current_color = 0;
-					// 串口继续接收
-					USART3_RX_STA = 0;
-				
+					color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
+					color_flag = 1;
 			}
 
 			// 当 有物体 且 物体和桶号相同 时，打开门
@@ -72,11 +77,38 @@ void TIM3_IRQHandler(void)
 		
 
 		// 处理motor_state_count 	当motor_state_count为0时，关闭电机，标志位清0
-		if (motor_state_count == 0) {
-			motor_state = 0;
-		} else if (motor_state == 1){ //当motor_state为1时，motor_state_count自减
-			motor_state_count--;
+		// if (motor_state_count == 0) {
+		// 	motor_state = 0;
+		// } else if (motor_state == 1){ //当motor_state为1时，motor_state_count自减
+		// 	motor_state_count--;
+		// }
+		
+		if (ucount != 0) {
+			ucount --;
 		}
+		if (ucount == 0 && color_flag == 1) {
+			color_flag = 0;
+			USART3_RX_STA = 0;
+			current_color = 0;
+			color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
+		}
+		
+		if (current_color) {
+			motor_state = 0;
+		} else {
+			motor_state = 1;
+		}
+
+		// 处理串口延时
+		if(color_buffer[0] == color_buffer[1] 
+		&& color_buffer[1] == color_buffer[2]
+		&& color_buffer[0] != 0
+		&& ucount == 0) {
+				current_color = color_buffer[0];
+		} else if (ucount == 0){
+			USART3_RX_STA = 0;
+		}
+
 
 		// 处理delay_count
 		delay_count = delay_count > 0 ? delay_count - 1 : 0;
@@ -84,21 +116,24 @@ void TIM3_IRQHandler(void)
 
 		// 防止门板开启时间过长
 		for(i = 0; i < 4; i++) {
-			// 当已有计时且门板关闭时，关闭计时
-			if(door_count[i] != 0 && channel_door[i] == 0) {
+			// 当已有计时且门板关闭时，关闭计时  保险措施
+			if(channel_door[i] == 0) {
 				door_count[i] = 0;
 			}
+
 			// 当门板开启时，开始计时
 			door_count[i] += channel_door[i];
+
 			// 当计时超过 30*5ms 时，关闭门板
 			if(door_count[i] >= 30) {
 				channel_door[i] = 0;
+				door_count[i] = 0;
 			}
 		}
 
 
-		// 根据motor_state_count的值控制电机
-		Motor = motor_state && motor_state_count;
+		// 根据motor_state的值控制电机
+		Motor = motor_state;
 		// 根据channel_door数组的值控制门板
 		if(!debug_flag) {
 			C0 = channel_door[0];

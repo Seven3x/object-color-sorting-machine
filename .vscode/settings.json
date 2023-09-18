@@ -10,6 +10,7 @@
         "sys.h": "c",
         "key.h": "c",
         "delay.h": "c",
-        "motor.h": "c"
+        "motor.h": "c",
+        "openmv.h": "c"
     }
 }

@@ -42,10 +42,10 @@ uint8_t channel_item[4];
 uint8_t channel_door[4];
 
 /**
- * 四个桶的编号，范围 0~3
+ * 四个桶的编号，范围 1~4
  * 可以修改此处以修改桶内存放的物体，分别和物体的0~3对应
  */
-uint8_t bucket[4] = {0, 1, 2, 3};
+uint8_t bucket[4] = {1, 2, 4, 8};
 
 /**
  * 拨码开关状态量，持续按下视为一次
@@ -111,7 +111,7 @@ int main(void)
 	// LCD_Init();
 
 	// LCD_ShowStr(2,0,message); 
-	
+	motor_state = 1;
 	// delay_ms(1000);
 	while(1)
 	{
@@ -134,8 +134,9 @@ int main(void)
 		// 每个循环检测一次拨码开关，值返回到switch_state_once和switch_state
 		// LED2 = KEY_Scan(1, 0);
 		DIP_Scan(2, 0);
-		LED2 = switch_state_once;
-	
+		// LED2 = switch_state_once;
+		LED2 = !!current_color;
+		
 		// delay_ms(1000);
 		
 			

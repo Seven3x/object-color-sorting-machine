@@ -28,10 +28,13 @@ Project File Date:  09/14/2023
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keilv5\ARM\ARMCC\Bin'
 Build target 'USART'
 compiling timer.c...
+..\HARDWARE\TIMER\timer.c(35): warning:  #260-D: explicit type is missing ("int" assumed)
+  		static  door_count[4] = {0};
+..\HARDWARE\TIMER\timer.c: 1 warning, 0 errors
 linking...
-Program Size: Code=4200 RO-data=424 RW-data=68 ZI-data=1636  
+Program Size: Code=4380 RO-data=424 RW-data=80 ZI-data=1648  
 FromELF: creating hex file...
-"..\OBJ\USART.axf" - 0 Error(s), 0 Warning(s).
+"..\OBJ\USART.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -44,7 +47,7 @@ Package Vendor: Keil
   D:\Keilv5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

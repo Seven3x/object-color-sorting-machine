@@ -16,7 +16,9 @@ extern uint16_t motor_state_count;
 extern uint8_t motor_state;
 extern uint8_t switch_state_once;
 extern uint8_t current_color;
+extern u8 bcount;
+extern u8 color_buffer[4];
 
-#define clip(x) ((x) > 3 ? (x) - 4 : (x))
+#define clip(x) (((x) > 3) ? (x) - 4 : (x))
 
 #endif // !__

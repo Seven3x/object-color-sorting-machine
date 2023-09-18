@@ -1,4 +1,4 @@
-#include "openmv.h"
+#include "openmv.h" 
 
 //注意,读取USARTx->SR能避免莫名其妙的错误   	
 u8 USART3_RX_BUF;     //接收缓冲,最大USART_REC_LEN个字节.
@@ -7,6 +7,9 @@ u8 USART3_RX_BUF;     //接收缓冲,最大USART_REC_LEN个字节.
 //bit14，	接收到0x0d
 //bit13~0，	接收到的有效字节数目
 u16 USART3_RX_STA=0;       //接收状态标记	
+
+u8 color_buffer[4] = {0, 0, 0, 0};
+u8 bcount = 0;
 
 void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
     u8 Res;
@@ -21,14 +24,15 @@ void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
 				if(Res!=0x0a)USART3_RX_STA=0;//接收错误,重新开始
 				else {
                     USART3_RX_STA|=0x8000;	//接收完成了
-                    //颜色赋值
-                    current_color = USART3_RX_BUF;
-                    if (!current_color) {//如果为0，则继续接受，否则等待调用后清零
-                        USART3_RX_STA = 0;
-                    }
+                    
+                    //颜色赋值 每隔5ms接受一次颜色 连续接受三个
+                    color_buffer[bcount] = USART3_RX_BUF;
+                    bcount = (bcount + 1) % 3;
+
+                    // 调试用
                     USART_SendData(USART3, 'b');         //向串口3发送数据
                     while(USART_GetFlagStatus(USART3,USART_FLAG_TC)!=SET);//等待发送结束
-                    USART_SendData(USART1, USART3_RX_BUF+'0');         //向串口1发送数据
+                    USART_SendData(USART3, USART3_RX_BUF+'0');         //向串口1发送数据
                     while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
                 }
 			}
@@ -42,7 +46,7 @@ void USART3_IRQHandler(void) {//必须接受0x0d 0x0a
                 else
 				{
 					USART3_RX_BUF=Res;
-                    current_color = Res;
+                    // current_color = Res;
 
 					USART3_RX_STA++;
 					if(USART3_RX_STA> 1)USART3_RX_STA=0;//接收数据错误,重新开始接收	  
