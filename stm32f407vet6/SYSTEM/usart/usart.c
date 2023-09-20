@@ -97,6 +97,13 @@ void uart_init(u32 bound){
 	
 }
 
+void USART_SendString(USART_TypeDef * USART, char * str) {
+	for (; *str; str++) {
+		USART_SendData(USART, *str);
+		while(USART_GetFlagStatus(USART,USART_FLAG_TC)!=SET);//等待发送结
+	}
+}
+
 
 void USART1_IRQHandler(void)                	//串口1中断服务程序
 {

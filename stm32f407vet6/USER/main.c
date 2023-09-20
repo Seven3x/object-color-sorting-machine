@@ -23,7 +23,7 @@ uint8_t item;
 /**
  * 表示每个通道旋转了几个90°，最大值为3，初始值为0
  */
-uint8_t angle_count;
+uint8_t angle_count=0;
 
 /**
  * 每个通道当前是否存放物体
@@ -84,10 +84,12 @@ uint8_t motor_state = 0;
  */
 uint8_t current_color = 0;
 
-// uint8_t message[] = "How are you?";
-
-
+uint8_t message[] = "c0:0 c1:0 c2:0 c3:0\r\n";
+uint8_t message_angle[] = " A:0\r\n";
+uint8_t angle_count_last;
+uint8_t msg_flag;
 uint8_t debug_flag = 0;
+uint8_t msg_lock = 0;
 
 int main(void)
 { 
@@ -108,7 +110,8 @@ int main(void)
 
 	// delay_ms(1000);
 
-	LCD_Init();
+	// LCD_Init();
+	delay_ms(100);
 
 	// LCD_ShowStr(2,0,message); 
 	motor_state = 1;
@@ -128,14 +131,42 @@ int main(void)
 		//***********测试拨码开关***********
 		// test_DIP();
 
+		//***********测试通道号对应*****
+		if(channel_item[0] != 0 
+		|| channel_item[1] != 0 
+		|| channel_item[2] != 0
+		|| channel_item[3] != 0){
+			message[3] 	= 	'0' + channel_item[0];
+			message[8] 	= 	'0' + channel_item[1];
+			message[13]	= 	'0' + channel_item[2];
+			message[18]	= 	'0' + channel_item[3];
+			if (msg_flag && !msg_lock) {
+				USART_SendString(USART1, message);
+			}
+		}
+		msg_lock = msg_flag;
+		msg_flag= channel_item[0] || channel_item[1] || channel_item[2] || channel_item[3];
+
+		message_angle[3] =   '0' + angle_count;
+		if (angle_count_last != angle_count) {
+			USART_SendString(USART1, message_angle);
 		
+		} 
+		angle_count_last = angle_count;
+
+		// if ((USART_RX_STA&0x8000)!=0) {
+		// 	channel_item[0] = USART_RX_BUF[0];
+		// 	channel_item[1] = USART_RX_BUF[1];
+		// 	channel_item[2] = USART_RX_BUF[2];
+		// 	channel_item[3] = USART_RX_BUF[3];
+		// }
 		
 
 		// 每个循环检测一次拨码开关，值返回到switch_state_once和switch_state
 		// LED2 = KEY_Scan(1, 0);
 		DIP_Scan(2, 0);
 		// LED2 = switch_state_once;
-		// LED2 = !!current_color;
+		LED2 = !!current_color;
 		
 		// delay_ms(1000);
 		

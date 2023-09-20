@@ -12,10 +12,10 @@
 
 
 /* 定义I2C总线连接的GPIO端口, 用户只需要修改下面4行代码即可任意改变SCL和SDA的引脚 */
-#define LCD1602_GPIO_PORT_I2C	GPIOB			/* GPIO端口 */
-#define LCD1602_RCC_I2C_PORT 	RCC_AHB1Periph_GPIOB		/* GPIO端口时钟 */
-#define LCD1602_I2C_SCL_PIN		GPIO_Pin_6			/* 连接到SCL时钟线的GPIO */
-#define LCD1602_I2C_SDA_PIN		GPIO_Pin_7			/* 连接到SDA数据线的GPIO */
+#define LCD1602_GPIO_PORT_I2C	GPIOE			/* GPIO端口 */
+#define LCD1602_RCC_I2C_PORT 	RCC_AHB1Periph_GPIOE		/* GPIO端口时钟 */
+#define LCD1602_I2C_SCL_PIN		GPIO_Pin_11			/* 连接到SCL时钟线的GPIO */
+#define LCD1602_I2C_SDA_PIN		GPIO_Pin_13			/* 连接到SDA数据线的GPIO */
 
 
 /* 定义读写SCL和SDA的宏，已增加代码的可移植性和可阅读性 */

@@ -15,6 +15,9 @@ uint32_t delay_count = 0;
 uint16_t ucount = 0;;
 uint8_t switch_lock = 0;
 uint16_t switch_lock_count = 0;
+uint8_t channel_pos[4] = {0, 1, 2, 3};
+uint8_t last_color;
+uint16_t color_count;
 /**
  * @brief 延迟函数，单位ms，延迟必须为5的倍数，向下取整
  * 
@@ -41,27 +44,29 @@ void TIM3_IRQHandler(void)
 			interval_count = 0;
 		}
 
-		
-		
-		
+
+
+
 		// 当碰到拨码开关时，执行该程序
 		if(switch_state_once) {
 			// 确保每次至少间隔1s再触发
-			switch_lock_count = 100;
+			switch_lock_count = 200;
 			switch_lock = 1;
 
-			angle_count = clip(angle_count + 1);
-
+			USART_SendString(USART1, "t\r\n");
+			angle_count = (angle_count + 1) % 4;
 
 			// 当 有物体 且 物体和桶号相同 时，打开门
 			for(i = 0; i < 4; i++) {
-				if (channel_item[i] == bucket[clip(angle_count + i)]) {
+				if (channel_item[i] == bucket[(7 - angle_count + i) % 4]) {
 					//打开通道，打开150ms后会自动关闭
 					channel_door[i] = 1;
 					//物体清零
 					channel_item[i] = 0;
 				}
 			}
+
+
 
 			// 判断当前颜色
 			if (current_color) {
@@ -71,11 +76,13 @@ void TIM3_IRQHandler(void)
 				motor_state = 1;
 				// 放进东西
 				channel_item[angle_count] = current_color;
+				
 				// 清空当前颜色
 				current_color = 0;
 				color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
 				color_flag = 1;
 			}
+
 
 			
 
@@ -108,18 +115,25 @@ void TIM3_IRQHandler(void)
 			color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
 		}
 		
-		if (current_color) {
-			motor_state = 0;
+		if (current_color != 0 && last_color != current_color) {
+			color_count = 60;
+		} else if (current_color != 0 && last_color == current_color) {
+			if (color_count == 0) {
+				motor_state = 0;
+			} else {
+				color_count -= 1;
+			}
 		} else {
 			motor_state = 1;
 		}
+		last_color = current_color;
 
 		// 处理串口延时
 		if(color_buffer[0] == color_buffer[1] 
 		&& color_buffer[1] == color_buffer[2]
 		&& color_buffer[0] != 0
 		&& ucount == 0) {
-				current_color = color_buffer[0];
+			current_color = color_buffer[0];
 		} else if (ucount == 0){
 			USART3_RX_STA = 0;
 		}
@@ -127,7 +141,11 @@ void TIM3_IRQHandler(void)
 
 		// 处理delay_count
 		delay_count = delay_count > 0 ? delay_count - 1 : 0;
-
+		
+		// 处理color_count
+		if (color_count >= 1) {
+			color_count --;
+		}
 
 		// 防止门板开启时间过长
 		for(i = 0; i < 4; i++) {
@@ -140,7 +158,7 @@ void TIM3_IRQHandler(void)
 			door_count[i] += channel_door[i];
 
 			// 当计时超过 30*5ms 时，关闭门板
-			if(door_count[i] >= 30) {
+			if(door_count[i] >= 40) {
 				channel_door[i] = 0;
 				door_count[i] = 0;
 			}
