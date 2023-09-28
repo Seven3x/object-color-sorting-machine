@@ -27,7 +27,51 @@ Project File Date:  09/14/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keilv5\ARM\ARMCC\Bin'
 Build target 'USART'
-"..\OBJ\USART.axf" - 0 Error(s), 0 Warning(s).
+compiling motor.c...
+..\HARDWARE\MOTOR\motor.c(31): warning:  #223-D: function "delay_ms" declared implicitly
+          delay_ms(2000);
+..\HARDWARE\MOTOR\motor.c: 1 warning, 0 errors
+compiling key.c...
+..\HARDWARE\KEY\key.c(60): warning:  #177-D: variable "key_value"  was declared but never referenced
+  	u8 key_value = 0;
+..\HARDWARE\KEY\key.c: 1 warning, 0 errors
+compiling lcd1602.c...
+compiling main.c...
+..\HARDWARE\OPENMV\openmv.h(13): warning:  #1-D: last line of file ends without a newline
+  #endif // !__
+main.c(144): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  				USART_SendString(USART1, message);
+main.c(152): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  			USART_SendString(USART1, message_angle);
+main.c(96): warning:  #177-D: variable "t"  was declared but never referenced
+  	u8 t;
+main.c(97): warning:  #177-D: variable "len"  was declared but never referenced
+  	u8 len;	
+main.c(98): warning:  #177-D: variable "times"  was declared but never referenced
+  	u16 times=0;  
+main.c(99): warning:  #177-D: variable "i"  was declared but never referenced
+  	u8 i = 0;
+main.c: 7 warnings, 0 errors
+compiling timer.c...
+..\HARDWARE\TIMER\timer.c(39): warning:  #260-D: explicit type is missing ("int" assumed)
+  		static  door_count[4] = {0};
+..\HARDWARE\TIMER\timer.c(56): warning:  #223-D: function "USART_SendString" declared implicitly
+  			USART_SendString(USART1, "t\r\n");
+..\HARDWARE\TIMER\timer.c: 2 warnings, 0 errors
+compiling openmv.c...
+..\HARDWARE\OPENMV\openmv.h(13): warning:  #1-D: last line of file ends without a newline
+  #endif // !__
+..\HARDWARE\OPENMV\openmv.c: 1 warning, 0 errors
+compiling channel.c...
+..\HARDWARE\CHANNEL\channel.c(33): warning:  #223-D: function "delay_ms" declared implicitly
+          delay_ms(200);
+..\HARDWARE\CHANNEL\channel.c(48): warning:  #1-D: last line of file ends without a newline
+  }
+..\HARDWARE\CHANNEL\channel.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=4764 RO-data=424 RW-data=124 ZI-data=1652  
+FromELF: creating hex file...
+"..\OBJ\USART.axf" - 0 Error(s), 14 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -40,7 +84,7 @@ Package Vendor: Keil
   D:\Keilv5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

@@ -50,7 +50,7 @@ void TIM3_IRQHandler(void)
 		// 当碰到拨码开关时，执行该程序
 		if(switch_state_once) {
 			// 确保每次至少间隔1s再触发
-			switch_lock_count = 200;
+			switch_lock_count = SWITCH_CHECK_TIME;
 			switch_lock = 1;
 
 			USART_SendString(USART1, "t\r\n");
@@ -59,7 +59,7 @@ void TIM3_IRQHandler(void)
 			// 当 有物体 且 物体和桶号相同 时，打开门
 			for(i = 0; i < 4; i++) {
 				if (channel_item[i] == bucket[(7 - angle_count + i) % 4]) {
-					//打开通道，打开150ms后会自动关闭
+					//打开通道，会自动关闭
 					channel_door[i] = 1;
 					//物体清零
 					channel_item[i] = 0;
@@ -72,7 +72,7 @@ void TIM3_IRQHandler(void)
 			if (current_color) {
 				// 打开电机多少个 5ms 
 				// motor_state_count = 200;
-				ucount = 200;
+				ucount = COLOR_CHECK_TIME;
 				motor_state = 1;
 				// 放进东西
 				channel_item[angle_count] = current_color;
@@ -105,9 +105,12 @@ void TIM3_IRQHandler(void)
 			switch_lock	= 0;
 		}
 		
+		// 处理ucount 也即颜色检测间隔
 		if (ucount != 0) {
 			ucount --;
 		}
+
+		// 该if语句表示当颜色检测间隔结束时，清空串口缓冲区，继续接受串口信息
 		if (ucount == 0 && color_flag == 1) {
 			color_flag = 0;
 			USART3_RX_STA = 0;
@@ -115,8 +118,10 @@ void TIM3_IRQHandler(void)
 			color_buffer[0] = color_buffer[1] = color_buffer[2] = 0;
 		}
 		
+		// 处理color_count
+		// 也即处理颜色检测到颜色后，传送带停止的延时
 		if (current_color != 0 && last_color != current_color) {
-			color_count = 60;
+			color_count = MOTOR_STOP_TIME;
 		} else if (current_color != 0 && last_color == current_color) {
 			if (color_count == 0) {
 				motor_state = 0;
@@ -158,7 +163,7 @@ void TIM3_IRQHandler(void)
 			door_count[i] += channel_door[i];
 
 			// 当计时超过 30*5ms 时，关闭门板
-			if(door_count[i] >= 40) {
+			if(door_count[i] >= CHANNEL_OPEN_TIME) {
 				channel_door[i] = 0;
 				door_count[i] = 0;
 			}

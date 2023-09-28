@@ -62,3 +62,15 @@ dkms.conf
 *.dep
 *.htm
 OBJ\
+stm32f407vet6/OBJ/channel.crf
+stm32f407vet6/OBJ/key.crf
+stm32f407vet6/OBJ/lcd1602.crf
+stm32f407vet6/OBJ/main_USART.dep
+stm32f407vet6/OBJ/main.crf
+stm32f407vet6/OBJ/motor.crf
+stm32f407vet6/OBJ/openmv.crf
+stm32f407vet6/OBJ/timer.crf
+stm32f407vet6/OBJ/USART.axf
+stm32f407vet6/OBJ/USART.build_log.htm
+stm32f407vet6/OBJ/USART.htm
+.gitignore

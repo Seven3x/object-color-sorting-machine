@@ -22,5 +22,13 @@ extern uint8_t switch_lock;
 extern uint16_t switch_lock_count;
 
 #define clip(x) (((x) > 3) ? (x) - 4 : (x))
+// 每个通道电磁铁开启的时间，单位是5ms，比如50就是开启50*5ms=250ms
+#define CHANNEL_OPEN_TIME 50
+// 拨码开关每次检测的时间间隔，单位5ms，比如100就是100*5ms=500ms
+#define SWITCH_CHECK_TIME 200
+// 颜色检测的间隔，当检测到颜色时，间隔多少时间再检测下一次颜色，单位5ms
+#define COLOR_CHECK_TIME 200
+// 传送带停止的延时，当检测到颜色时，等待多少时间再停止传送带，单位5ms
+#define MOTOR_STOP_TIME 200
 
 #endif // !__
